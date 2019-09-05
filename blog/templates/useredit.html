@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .i1{
+            disabled:disabled;
+        }
+    </style>
+</head>
+<body>
+    <form action="/edit-{{ name }}" method="POST">
+        {% csrf_token %}
+        {{ user.as_p }}
+        <input type="submit" value="保存">
+    </form>
+</body>
+</html>

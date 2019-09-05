@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block news %}
+{% load myfilter  %}
+<style>
+    p img{
+        height: 50px;
+        width:100px
+    }
+</style>
+<div class="topnews">
+    <div class="l_box f_l">
+      <div class="postdate">
+        <div class="date">{{ article_desc_list.date_publish | date:'m' }}</div>
+        <div class="month">{{ article_desc_list.date_publish | date:'d' }}</div>
+      </div>
+      <div class="title">
+        <h2>文章详情</h2>
+      </div>
+        <div class="blogs">
+        <h2>{{ article_desc_list.title }}</h2>
+        <p style="font-size: 18px;">{{ article_desc_list.content | safe}}</p>
+        </div>
+        <p><h3>评论详情：</h3></p>
+        <hr>
+        {% for comment in comment_list %}
+            <p>{{ comment.content |safe}}</p>
+            <p class="autor"><span class="lm f_l"></span><span class="dtime f_l">{{ forloop.counter }}楼&nbsp&nbsp&nbsp{{ comment.date_publish|date:'Y-m-d' }}</span><span class="viewnum f_r">用户：{{ comment.user }}</span></p>
+            <hr>
+        {% endfor %}
+        <div >
+            <form action="{% url 'article_desc' %}?article_id={{ article_desc_list.id }}" method="post">
+                {% csrf_token %}
+                <p>添加评论：</p>
+                <lable>评论内容：</lable>
+                <textarea id='usertext' name="user_comment" style="height: 200px;width: 300px"></textarea>
+                <input type="submit" value="提交评论">
+            </form>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/kindeditor-4.1.10/kindeditor-all.js' %}"></script>
+<script>
+{#    var csrfitems = document.getElementsByName("csrfmiddlewaretoken");#}
+{#    var csrftoken = "";#}
+{#    if(csrfitems.length > 0)#}
+{#    {#}
+{#        csrftoken = csrfitems[0].value;#}
+{#    }#}
+
+    $(function () {
+        KindEditor.create('#usertext',{
+            uploadJson :'/uploadfile/',
+            extraFileUploadParams : {
+                csrfmiddlewaretoken:"{{ csrf_token }}"
+            }
+        })
+    })
+</script>
+{% endblock %}

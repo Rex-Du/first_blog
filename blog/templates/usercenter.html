@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .content{
+            text-align: right;
+            width:30%;
+            margin: auto auto;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center;width: 70%;margin: auto auto">
+        <h2>个人中心</h2>
+        <div class="content">
+            {{ user.as_p }}
+            <a href="/edit-{{ name }}">修改个人信息</a>
+        </div>
+    </div>
+</body>
+</html>

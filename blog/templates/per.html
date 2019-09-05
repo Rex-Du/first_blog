@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<div style="float: left;margin-top: 10px">
+<select class="form-control btn-primary" id="sel1" onchange="perpage(this)" >
+  <option value="2" selected="selected">每页2条</option>
+  <option value="5">每页5条</option>
+  <option value="10">每页10条</option>
+</select>
+</div>
+<script src={% static 'js/jquery.min.js' %}></script>
+<script src={% static 'js/jquery.cookie.js' %}></script>
+<script >
+    $(function () {
+        if (typeof($.cookie('per_page_count'))!=='undefined') {
+            $('#sel1').val($.cookie('per_page_count'))
+        }
+{#        else {#}
+{#            var val = $('#sel1').val();#}
+{#            $.cookie('per_page_count', val);#}
+{#        }#}
+{#        $('#sel1').val($.cookie('per_page_count'))#}
+    });
+
+    function perpage(ths) {
+        var val = $(ths).val();
+        $.cookie('per_page_count', val);
+        location.reload()
+    }
+</script>
+

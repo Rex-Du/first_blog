@@ -1,0 +1,128 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+        }
+        div{
+            margin: 0 auto;
+            width:80%;
+        }
+        .header{
+            background-color: #fff2c9;
+            height: 100px;
+            text-align: center;
+            background: url({% static 'images/background-img.jpg' %});
+
+        }
+        .content{
+            margin-top: 3px;
+            height: 500px;
+            background-color: #666600;
+            text-align: right;
+            background: url({% static 'images/background-img2.jpg' %});
+
+        }
+        .inputdiv{
+            margin-right: 400px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .footer{
+            height: 150px;
+            background-color: #ffd482;
+        }
+        .text{
+            margin:10px 100px 10px auto;
+        }
+        .sending{
+            cursor: not-allowed;
+            background-color: #3e606f;
+        }
+        .agetcode{
+            text-decoration: none;
+            background-color: #2b5a8c;
+            color: white;
+            height: 20px;
+            display: inline-block;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 style="display: inline-block;">个人博客系统注册</h1>
+    </div>
+    <div class="content">
+        <div class="inputdiv">
+            <form action="{% url 'register' %}" method="post">
+                {% csrf_token %}
+{#                用户名：<input style="margin-right: 100px" type="text" name="username" class="text"><br/>#}
+{#                密  码：<input style="margin-right: 100px" type="password" name="password" class="password"><br/>#}
+                <div id="register_error"></div>
+                {{ userinfo.as_p }}
+                <p>
+                    <input type="text" style="width: 78px"><a id='fetch_code' href="" class="agetcode">获取验证码</a>
+                </p>
+                <input style="margin-right: 120px" type="submit" value="提交" >
+            </form>
+        </div>
+    </div>
+    <div class="footer"></div>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script>
+        $(function(){
+            BindSendMeg();
+        });
+        function BindSendMeg() {
+            $('#fetch_code').click(function () {
+                $('#register_error').empty();
+                var email_url = $('#id_email').val();
+                if(email_url.trim().length==0){
+                    $('#register_error').text('请输入注册邮箱');
+                    return
+                }
+                if($(this).hasClass('sending')){
+                    return;
+                }
+                var ths=$(this);
+                var time = 60;
+                console.log(time);
+
+                $.ajaxSetup({
+                    data: {csrfmiddlewaretoken: {{ csrf_token }}}
+                });
+                $.ajax({
+                    url: '/send_msg/',
+                    type: 'POST',
+                    data:{email:email_url},
+                    dataType: 'josn',
+                    sucess:function (arg) {
+                        if(!arg.status){
+                            $('#register_error').text(arg.summary);
+                            console.log('fuck you')
+                        }else{
+                            ths.addClass('sending');
+                            var interval = setInterval(function () {
+                                ths.text('已发送'+'('+time+')');
+                                time -= 1;
+                                if(time<0){
+                                    clearInterval(interval);
+                                    ths.removeClass('sending');
+                                    ths.text('获取验证码')
+                                }
+                            }, 1000)
+                        }
+                    }
+                })
+            })
+            
+        }
+    </script>
+</body>
+</html>

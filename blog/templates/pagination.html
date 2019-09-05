@@ -1,0 +1,29 @@
+<div id="pagination">
+{#        <ul id="pagination-flickr">#}
+{#        {% if article_list.has_previous %}#}
+{#        <li class="previous"><a href="?{% if request.GET.year %}year={{ request.GET.year }}{% endif %}{% if request.GET.month %}&month={{ request.GET.month }}&{% endif %}{% if request.GET.tagname %}tagname={{ request.GET.tagname }}&{% endif %}page={{ article_list.previous_page_number }}">&laquo;上一页</a></li>#}
+{#        {% else %}#}
+{#        <li class="previous-off">&laquo;上一页</li>#}
+{#        {% endif %}#}
+{#         <li class="active">{{ article_list.number }}/{{ article_list.paginator.num_pages }}</li>#}
+{#        {% if article_list.has_next %}#}
+{#          <li class="next"><a href="?{% if request.GET.year %}year={{ request.GET.year }}{% endif %}{% if request.GET.month %}&month={{ request.GET.month }}&{% endif %}{% if request.GET.tagname %}tagname={{ request.GET.tagname }}&{% endif %}page={{ article_list.next_page_number }}">下一页 &raquo;</a></li>#}
+{#        {% else %}#}
+{#          <li class="next-off">下一页 &raquo;</li>#}
+{#    	{% endif %}#}
+{#       </ul>#}
+    <div class="btn-group">
+        {% if article_list.has_previous %}
+        <a class="btn btn-primary" href="?{% if request.GET.year %}year={{ request.GET.year }}{% endif %}{% if request.GET.month %}&month={{ request.GET.month }}&{% endif %}{% if request.GET.tagname %}tagname={{ request.GET.tagname }}&{% endif %}page={{ article_list.previous_page_number }}">&laquo;上一页</a>
+        {% else %}
+        <button class="btn btn-primary disabled">&laquo;上一页</button>
+        {% endif %}
+         <button class="btn btn-primary">{{ article_list.number }}/{{ article_list.paginator.num_pages }}</button>
+        {% if article_list.has_next %}
+          <a class="btn btn-primary" href="?{% if request.GET.year %}year={{ request.GET.year }}{% endif %}{% if request.GET.month %}&month={{ request.GET.month }}&{% endif %}{% if request.GET.tagname %}tagname={{ request.GET.tagname }}&{% endif %}page={{ article_list.next_page_number }}">下一页 &raquo;</a>
+        {% else %}
+          <button class="btn btn-primary disabled">下一页 &raquo;</button>
+    	{% endif %}
+       </ul>
+    </div>
+</div>
